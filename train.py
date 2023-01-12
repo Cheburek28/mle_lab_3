@@ -1,11 +1,13 @@
 import os
 from logger import Logger
 
-from pyspark_cassandra import *
 from pyspark.conf import SparkConf
 from pyspark.mllib.clustering import KMeans, KMeansModel
 from pyspark.sql.functions import *
 from math import sqrt
+
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType
 
 conf = SparkConf() \
     .setAppName("PySpark Cassandra Test") \
@@ -13,7 +15,9 @@ conf = SparkConf() \
     .set("spark.cassandra.connection.host", "cassandra-1")\
     .set("spark.sql.codegen.wholeStage", "false")
 
-sc = CassandraSparkContext(conf=conf).getOrCreate()
+sc = SparkContext(conf=conf).getOrCreate()
+
+spark = SparkSession.builder.master("local").appName("hdfs_test").getOrCreate()
 
 # TEST_SIZE = 0.2
 SHOW_LOG = True
@@ -29,21 +33,22 @@ class KMeans:
         # self.log.info("DataLoader is ready")
 
     def kmeans(self):
-        rdd_one = sc.cassandraTable("learn_cassandra", "test",
-                                    connection_config={"spark_cassandra_connection_host": "cassandra-1"})
 
-        clusters = KMeans.train(rdd_one, 2, maxIterations=10, initializationMode="random")
-
-        # Evaluate clustering by computing Within Set Sum of Squared Errors
-        def error(point):
-            center = clusters.centers[clusters.predict(point)]
-            return sqrt(sum([x ** 2 for x in (point - center)]))
-
-        WSSSE = rdd_one.map(lambda point: error(point)).reduce(lambda x, y: x + y)
-        print("Within Set Sum of Squared Error = " + str(WSSSE))
-
-        # Save and load model
-        clusters.save(sc, os.path.join(self.model_path, "KMeans"))
+        rdd_one = spark.read.csv("hdfs://localhost:9000/data1.csv", sep=",", header=True, nullValue="", nanValue="")
+        rdd_one.show(5)
+        #
+        # clusters = KMeans.train(rdd_one, 2, maxIterations=10, initializationMode="random")
+        #
+        # # Evaluate clustering by computing Within Set Sum of Squared Errors
+        # def error(point):
+        #     center = clusters.centers[clusters.predict(point)]
+        #     return sqrt(sum([x ** 2 for x in (point - center)]))
+        #
+        # WSSSE = rdd_one.map(lambda point: error(point)).reduce(lambda x, y: x + y)
+        # print("Within Set Sum of Squared Error = " + str(WSSSE))
+        #
+        # # Save and load model
+        # clusters.save(sc, os.path.join(self.model_path, "KMeans"))
 
 
 sc.stop()

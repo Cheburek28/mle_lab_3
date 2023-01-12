@@ -13,16 +13,18 @@ import pandas as pd
 
 df = pd.read_csv("data/en.openfoodfacts.org.products.csv", sep="	", nrows=30000)
 
+df = df.fillna(value=0)
+df.to_csv("data/new_data.csv")
 # df = df.head(500)
-print(str(df.keys().values)[1:-1].replace("' '", ", ").replace("'", ''))
-
-text = "CREATE TABLE learn_cassandra.test (code INT PRIMARY KEY, "
-for col_name in df.keys().values[1:]:
-    text += f'"{col_name}" text, '
-
-text += ");"
-
-print(text)
+# print(str(df.keys().values)[1:-1].replace("' '", ", ").replace("'", ''))
+#
+# text = "CREATE TABLE learn_cassandra.test (code INT PRIMARY KEY, "
+# for col_name in df.keys().values[1:]:
+#     text += f'"{col_name}" text, '
+#
+# text += ");"
+#
+# print(text)
 
 # ['code' 'url' 'creator' 'created_t' 'created_datetime' 'last_modified_t'
 #  'last_modified_datetime' 'product_name' 'abbreviated_product_name'
