@@ -54,4 +54,4 @@ class Logger:
             logger.addHandler(self.get_console_handler())
         logger.addHandler(self.get_file_handler())
         logger.propagate = False
-        return
+        return logger
