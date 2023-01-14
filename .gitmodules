@@ -1,3 +1,0 @@
-[submodule "pyspark-cassandra"]
-	path = pyspark-cassandra
-	url = https://github.com/anguenot/pyspark-cassandra.git
