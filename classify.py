@@ -55,7 +55,6 @@ class KMeansModel:
 
         silhouette_score = []
 
-        # for i in range(2, 10):
         kmeans = KMeans(featuresCol='standardized', k=2)
         model = kmeans.fit(data_scale_output)
 
