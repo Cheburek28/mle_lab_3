@@ -26,7 +26,7 @@ class DataMaker:
         import random
 
         n = sum(1 for line in open(self.data_path)) - 1  # number of records in file
-        s = 30000  # desired sample size
+        s = 100000  # desired sample size
 
         skip = sorted(random.sample(range(1, n+1), n-s))
 

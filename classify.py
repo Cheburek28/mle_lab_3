@@ -30,8 +30,6 @@ class KMeansModel:
             .appName("KMeansModel") \
             .getOrCreate()
 
-        # self.log.info("DataLoader is ready")
-
     def kmeans(self):
         """The class method which cloistering data into 7 classes. The reason to choose this number of classes is shown
         in silhouette_plot.png"""
@@ -47,7 +45,7 @@ class KMeansModel:
         assembled_data = assemble.transform(sparkDF)
         assembled_data.show(2)
 
-        scale = StandardScaler(inputCol='features', outputCol='standardized', )
+        scale = StandardScaler(inputCol='features', outputCol='standardized')
         data_scale = scale.fit(assembled_data)
         data_scale_output = data_scale.transform(assembled_data)
         data_scale_output.show(2)
@@ -58,7 +56,7 @@ class KMeansModel:
         silhouette_score = []
 
         # for i in range(2, 10):
-        kmeans = KMeans(featuresCol='standardized', k=7)
+        kmeans = KMeans(featuresCol='standardized', k=2)
         model = kmeans.fit(data_scale_output)
 
         # Make predictions
@@ -87,7 +85,7 @@ class KMeansModel:
 
     def save_model(self, df: pd.DataFrame):
         """Saves clustered data"""
-        self.datamart.set_classified_data(df)
+        self.datamart.set_clusterized_data(df)
 
 
 if __name__ == "__main__":

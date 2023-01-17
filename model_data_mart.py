@@ -24,7 +24,7 @@ class DataMart:
         conn.close()
         return df
 
-    def set_classified_data(self, data: pd.DataFrame):
+    def set_clusterized_data(self, data: pd.DataFrame):
         conn = self.sqlEngine.connect()
         try:
             data.to_sql("data_classified", conn, if_exists="replace")
