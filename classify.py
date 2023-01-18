@@ -60,25 +60,10 @@ class KMeansModel:
 
         # Make predictions
         predictions = model.transform(data_scale_output)
-        # predictions.printSchema()
-        # predictions.show()
 
         score = evaluator.evaluate(predictions)
         print("Silhouette Score:", score)
         silhouette_score.append(score)
-        #
-        # import matplotlib.pyplot as plt
-        # fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-        # ax.plot(range(2, 10), silhouette_score)
-        # ax.set_xlabel('k')
-        # ax.set_ylabel('cost')
-
-        # plt.show()
-
-        # centers = model.clusterCenters()
-        # print("Cluster Centers: ")
-        # for center in centers:
-        #     print(center)
 
         self.save_model(predictions.toPandas())
 

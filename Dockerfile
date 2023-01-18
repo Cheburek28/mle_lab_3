@@ -1,0 +1,6 @@
+
+FROM mysql
+
+ENV MYSQL_ROOT_PASSWORD admin
+
+EXPOSE 6603
