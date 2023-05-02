@@ -1,7 +1,7 @@
-version: 'latest'
+version: '3.3'
 services:
   db:
-    image: mysql:latest
+    image: mysql/mysql-server:latest
     restart: always
     environment:
       MYSQL_DATABASE: 'MLE_LAB_3'
@@ -19,4 +19,4 @@ services:
       - '6603'
       # Where our data will be persisted
     volumes:
-      - my-db:/var/lib/mysql
+      ["/root/docker/[container_name]/conf.d", "/etc/mysql/conf.d"]
